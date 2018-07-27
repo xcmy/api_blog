@@ -1,4 +1,4 @@
 module.exports =
   port:3000
-  init:false
+  init:true
   dbUrl:'mongodb://localhost/blog'
