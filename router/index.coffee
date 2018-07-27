@@ -1,5 +1,4 @@
 router = require('koa-router')()
-router.prefix '/api'
 db = require('../lib')
 
 router.get '/home',(ctx)->
@@ -44,5 +43,7 @@ router.get '/post/',(ctx)->
 router.get '/post/:id',(ctx)->
   ctx.body = await db.model('Post').findById(ctx.params.id)
 
+router.get '*',(ctx)->
+  ctx.body = 'please check your url is correct'
 
 module.exports = router
