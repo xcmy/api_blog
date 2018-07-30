@@ -9,8 +9,7 @@ app.use(cors());
 app.use(bodyparser())
 
 
-router = new Router();
-
+router = new Router({prefix:Config.urlPrefix});
 
 app.use (ctx,next)->
   console.log('request:'+JSON.stringify(ctx.request,null,2))

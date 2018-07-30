@@ -2,9 +2,6 @@ router = require('koa-router')()
 db = require('../lib')
 
 
-router.get '/api/blog/home',(ctx)->
-  ctx.body = {data:'hello world'}
-
 router.get '/home',(ctx)->
   console.log('------>home')
   info = await db.model('Basic').find()
@@ -14,7 +11,6 @@ router.get '/home',(ctx)->
 
 
 router.get '/post/type',(ctx)->
-
   posts = await db.model('Post').find({},{html:0,__v:0}).sort({date:-1})
   data = []
   for post in posts
