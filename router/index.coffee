@@ -2,7 +2,7 @@ router = require('koa-router')()
 db = require('../lib')
 
 
-router.get 'api/blog/home',(ctx)->
+router.get '/api/blog/home',(ctx)->
   ctx.body = {data:'hello world'}
 
 router.get '/home',(ctx)->
