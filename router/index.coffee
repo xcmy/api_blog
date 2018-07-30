@@ -2,8 +2,10 @@ router = require('koa-router')()
 db = require('../lib')
 
 router.get '/home',(ctx)->
+  console.log('------>home')
   info = await db.model('Basic').find()
   posts = await db.model('Post').find({home:true},{html:0,__v:0})
+  console.log('------>homeData:'+JSON.stringify(posts,null,2))
   ctx.body = {basic:info[0],posts:posts}
 
 
