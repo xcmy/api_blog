@@ -1,6 +1,11 @@
 module.exports =
   home:
-    top_img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532498632737&di=dfda81de04c2b9555aff8603afa471b2&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F9%2F57902b8472f17.jpg'
+    backgroundImage:
+      home:'http://pic1.win4000.com/wallpaper/e/58fb005766f6b.jpg',
+      post:'https://demos.creative-tim.com/material-kit-pro/assets/img/bg5.jpg',
+      search:'http://www.wallcoo.com/cartoon/Kitsunenoir_Design_Illustration_V/wallpapers/2560x1440/kim-holtermand-reflections.jpg',
+      list:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg',
+      about:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532498632737&di=dfda81de04c2b9555aff8603afa471b2&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F9%2F57902b8472f17.jpg'
     title:'Welcome To My Blog'
     subtitle:'This is a place to share technology'
     author:'Jack Jones'

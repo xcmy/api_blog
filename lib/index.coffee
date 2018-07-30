@@ -9,7 +9,7 @@ mongoose.connect(Config.dbUrl,{ useNewUrlParser: false });
 
 
 basicSchema = mongoose.Schema({
-  top_img:String
+  backgroundImage:JSON
   title:String
   subtitle:String
   author:String

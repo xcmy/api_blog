@@ -3,7 +3,6 @@ db = require('../lib')
 
 
 router.get '/home',(ctx)->
-  console.log('------>home')
   info = await db.model('Basic').find()
   posts = await db.model('Post').find({home:true},{html:0,__v:0})
   console.log('------>homeData:'+JSON.stringify(posts,null,2))
@@ -27,6 +26,11 @@ router.get '/post/type',(ctx)->
     data.push({sort:post.sort,posts:[p],count:1}) if create
   ctx.body = {data:data,total:posts.length}
 
+router.get '/post/relation',(ctx)->
+  console.log('reala')
+  posts = await db.model('Post').find({sort:ctx.query.sort},{html:0,__v:0}).limit(3)
+  ctx.body = posts
+
 router.get '/post/',(ctx)->
   console.log('req-body'+JSON.stringify(ctx.query,null,2))
   params = {
@@ -43,7 +47,9 @@ router.get '/post/',(ctx)->
   ctx.body  = await db.model('Post').find(params,{html:0,__v:0}).sort({date:-1})
 
 router.get '/post/:id',(ctx)->
-  ctx.body = await db.model('Post').findById(ctx.params.id)
+  basic = await db.model('Post').findById(ctx.params.id)
+  posts = await db.model('Post').find({sort:basic.sort},{html:0,__v:0}).limit(5)
+  ctx.body = {basic:basic,posts:posts}
 
 router.get '*',(ctx)->
   ctx.body = 'please check your url is correct'
