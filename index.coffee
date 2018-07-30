@@ -11,6 +11,14 @@ app.use(bodyparser())
 
 router = new Router();
 
+
+app.use (ctx,next)->
+  console.log('url:'+ctx.url)
+  console.log('query:'+JSON.stringify(ctx.query,null,2))
+  console.log('body:'+JSON.stringify(ctx.request.body,null,2))
+  next()
+
+
 api = require('./router')
 router.use api.routes()
 app
