@@ -13,7 +13,7 @@ router = new Router();
 
 
 app.use (ctx,next)->
-  console.log('url:'+ctx.url)
+  console.log('request:'+JSON.stringify(ctx.request,null,2))
   console.log('query:'+JSON.stringify(ctx.query,null,2))
   console.log('body:'+JSON.stringify(ctx.request.body,null,2))
   next()
