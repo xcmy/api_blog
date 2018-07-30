@@ -1,6 +1,10 @@
 router = require('koa-router')()
 db = require('../lib')
 
+
+router.get 'api/blog/home',(ctx)->
+  ctx.body = {data:'hello world'}
+
 router.get '/home',(ctx)->
   console.log('------>home')
   info = await db.model('Basic').find()
