@@ -1,6 +1,5 @@
 module.exports =
   [
-
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'NodeJS'
@@ -10,7 +9,7 @@ module.exports =
       date:'2017-11-08'
       author:'xcmy'
       path:'/node/js-excel.md'
-      home:false
+      home:true
     },
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
@@ -21,6 +20,17 @@ module.exports =
       date:'2018-06-02'
       author:'xcmy'
       path:'/node/interview.md'
+      home:true
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      sort:'NodeJS'
+      title:'Sequelize 使用笔记'
+      subtitle:'根据平时项目中使用Sequelize框架整理的学习笔记'
+      tags:['node','postgresql','Sequelize']
+      date:'2017-06-15'
+      author:'xcmy'
+      path:'/node/sequelize.md'
       home:false
     },
     {
@@ -34,6 +44,18 @@ module.exports =
       path:'/node/sort.md'
       home:false
     },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      sort:'CoffeeScript'
+      title:'一个基于coffee + postgresql + koa2 的服务端项目模型搭建'
+      subtitle:'该文章整理了使用CoffeeScript作为服务端语言，数据库采用PostgreSQL,webFrameWork使用koa2搭建一个web服务项目的流程。'
+      tags:['CoffeeScript','postgresql','koa']
+      date:'2018-08-13'
+      author:'xcmy'
+      path:'/node/kcpdemo.md'
+      home:false
+    },
+
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'Object-C'
@@ -76,7 +98,7 @@ module.exports =
       date:'2016-09-08'
       author:'xcmy'
       path:'/shell/windows.md'
-      home:true
+      home:false
     },
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
@@ -87,7 +109,40 @@ module.exports =
       date:'2017-12-23'
       author:'xcmy'
       path:'/shell/zsh.md'
-      home:true
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'使用vue-cli脚手架搭建electron项目'
+      sort:'vue'
+      subtitle:'基于vue-cli脚手架创建electron项目'
+      tags:['electron','vue']
+      date:'2017-12-09'
+      author:'xcmy'
+      path:'/vue/electron-vue.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'vue项目打包空白问题解决以及打包优化'
+      sort:'vue'
+      subtitle:'vue项目路径问题导致打包页面空白问题解决以及使用cdn优化包大小'
+      tags:['vue']
+      date:'2017-10-19'
+      author:'xcmy'
+      path:'/vue/vue.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'Go语言学习'
+      sort:'golang'
+      subtitle:'主要整理了Go语言的安装、GOPATH设置、项目创建、简单接口实现和接口测试等。'
+      tags:['golang']
+      date:'2017-12-26'
+      author:'xcmy'
+      path:'/vue/golearn.md'
+      home:false
     },
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
@@ -98,6 +153,17 @@ module.exports =
       date:'2017-09-08'
       author:'xcmy'
       path:'/other/webpack.md'
-      home:true
-    }
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'markdown语法介绍'
+      sort:'其他'
+      subtitle:'自己整理的常用的markdown语法以及示例'
+      tags:['markdown']
+      date:'2017-07-30'
+      author:'xcmy'
+      path:'/other/gfm.md'
+      home:false
+    },
   ]
