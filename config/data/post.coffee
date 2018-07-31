@@ -1,5 +1,6 @@
 module.exports =
   [
+#    Node
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'NodeJS'
@@ -33,6 +34,9 @@ module.exports =
       path:'/node/sequelize.md'
       home:false
     },
+
+#  Coffee
+
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'CoffeeScript'
@@ -56,6 +60,7 @@ module.exports =
       home:false
     },
 
+#  Object-C
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'Object-C'
@@ -67,6 +72,7 @@ module.exports =
       path:'/oc/resource.md'
       home:false
     },
+#  Swift
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'Swift'
@@ -78,6 +84,7 @@ module.exports =
       path:'/oc/socketio.md'
       home:false
     },
+#  Python
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'Python'
@@ -87,6 +94,18 @@ module.exports =
       date:'2018-05-08'
       author:'xcmy'
       path:'/python/python1.md'
+      home:false
+    },
+#  Shell
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'Linux常用命令'
+      sort:'Shell'
+      subtitle:'记录一些常用的linux下的命令'
+      tags:['linux']
+      date:'2016-12-08'
+      author:'xcmy'
+      path:'/shell/command.md'
       home:false
     },
     {
@@ -113,6 +132,84 @@ module.exports =
     },
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'阿里云用户添加和权限配置'
+      sort:'Shell'
+      subtitle:'使用阿里云ECS过程中整理的添加用户和权限配置问题'
+      tags:['linux','zsh','阿里云']
+      date:'2018-05-08'
+      author:'xcmy'
+      path:'/shell/aly_user.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'阿里云一些常用基础设置'
+      sort:'Shell'
+      subtitle:'阿里云ECS一些基础的配置命令整理'
+      tags:['linux','阿里云']
+      date:'2018-03-28'
+      author:'xcmy'
+      path:'/shell/aly_basic.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'nginx安装以及配置'
+      sort:'Shell'
+      subtitle:'关于nginx的安装、配置、问题记录'
+      tags:['linux','阿里云','nginx']
+      date:'2018-02-16'
+      author:'xcmy'
+      path:'/shell/nginx.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'阿里云ECS一些常用的环境安装'
+      sort:'Shell'
+      subtitle:'阿里云上Node、MongoDB、CoffeeScript、PM2的安装流程以及注意事项'
+      tags:['阿里云','node','mongo','pm2','coffeeScript']
+      date:'2017-03-10'
+      author:'xcmy'
+      path:'/shell/aly_install.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'在阿里云服务器上使用setup-ipsec-vpn搭建VPN'
+      sort:'Shell'
+      subtitle:'在阿里云服务器上使用setup-ipsec-vpn搭建VPN过程'
+      tags:['linux','vpn','阿里云']
+      date:'2018-04-20'
+      author:'xcmy'
+      path:'/shell/aly_vpn.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'阿里云用户ssh免密登陆配置'
+      sort:'Shell'
+      subtitle:'记录阿里云用户使用ssh免密登陆的配置过程'
+      tags:['linux','ssh','阿里云']
+      date:'2018-04-07'
+      author:'xcmy'
+      path:'/shell/aly_ssh.md'
+      home:false
+    },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'iptables安装以及使用'
+      sort:'Shell'
+      subtitle:'iptables安装以及使用'
+      tags:['linux','阿里云','iptables']
+      date:'2018-05-11'
+      author:'xcmy'
+      path:'/shell/aly_iptables.md'
+      home:false
+    },
+#  vue
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       title:'使用vue-cli脚手架搭建electron项目'
       sort:'vue'
       subtitle:'基于vue-cli脚手架创建electron项目'
@@ -133,6 +230,7 @@ module.exports =
       path:'/vue/vue.md'
       home:false
     },
+#  golang
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       title:'Go语言学习'
@@ -144,6 +242,7 @@ module.exports =
       path:'/vue/golearn.md'
       home:false
     },
+#  其他
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       title:'webstorm 破解'

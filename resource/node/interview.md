@@ -1,4 +1,402 @@
 
+### node
+
+- [多线程](#node 多线程)
+- [缓存优化策略](#缓存优化策略)
+- [调试工具](#调试工具)
+- [GC](#Node.js 的 GC)
+
+
+#### node 多线程
+[ nodejs多线程，真正的非阻塞](https://cnodejs.org/topic/518b679763e9f8a5424406e9)
+
+> node从他推出至今，充满赞美和饱受诟病的都是其单线程模型，所有的任务都在一个线程中完成（I/O等例外），优势的地方自然是免去了频繁切换线程的开销，以及减少资源互抢的问题等等，但是当nodejs面对cpu密集型模型的时候就力不从心了。尽管node拥有异步机制，可以把一些耗时算法丢入eventloop等待下个事件循环再做，但是因为其任然是单线程模型，所以终究会造成阻塞。
+
+> Fibers 又称纤程，可以理解为协同程序，类似py和lua都有这样的模型。使用Fibers可以避免对资源的互抢，减少cpu和内存的消耗，但是Fibers并不能够真正的并行执行，同一时刻只有一个Fibers在执行，如果在其中一个Fibers中执行过多的cpu操作或者写了个死循环，则整个主程序将卡死住。node中的异步事件循环模型就有点象这个。
+
+> Threads 又称线程，他可以在同一时刻并行的执行，他们共享主进程的内存，在其中某一时刻某一个threads锁死了，是不会影响主线程以及其他线程的执行。但是为了实现这个模型，我们不得不消耗更多的内存和cpu为线程切换的开销，同时也存在可能多个线程对同一内存单元进行读写而造成程序崩溃的问题。
+
+
+
+
+[Node.js的线程和进程](https://www.cnblogs.com/chris-oil/p/5339305.html)
+> 在Node.js环境中，所有的请求均在单一的进程服务中，当某个请求导致未知错误时，整个服务器都会受到影响
+
+> Google的V8 Javascript引擎已经在Chrome浏览器里证明了它的性能，所以Node.js的作者Ryan Dahl选择了v8作为Node.js的执行引擎，v8赋予Node.js高效性能的同时也注定了Node.js和大名鼎鼎的Nginx一样，都是以单线程为基础的，当然这也正是作者Ryan Dahl设计Node.js的初衷。
+
+
+
+单线程的优缺点
+- 高性能
+　　
+ > 首先，单线程避免了传统PHP那样频繁创建、切换线程的开销，使执行速度更加迅速。第二，资源占用小，如果有对Node.js的web服务器做过压力测试的朋友可能发现，Node.js在大负荷下对内存占用仍然很低，同样的负载PHP因为一个请求一个线程的模型，将会占用大量的物理内存，很可能会导致服务器因物理内存耗尽而频繁交换，失去响应。
+- 线程安全
+    > 单线程的js还保证了绝对的线程安全，不用担心同一变量同时被多个线程进行读写而造成的程序崩溃。比如我们之前做的web访问统计，因为单线程的绝对线程安全，所以不可能存在同时对count变量进行读写的情况，我们的统计代码就算是成百的并发用户请求都不会出现问题，相较PHP的那种存文件记录访问，就会面临并发同时写文件的问题。线程安全的同时也解放了开发人员，免去了多线程编程中忘记对变量加锁或者解锁造成的悲剧。
+- 单线程的异步和非阻塞
+> Node.js在底层访问I/O还是多线程的,所以在我们看来Node.js的代码就是非阻塞和异步形式的
+
+- 阻塞的单线程
+> Node.js可以处理数以千记的并发，但是一个Node.js进程在某一时刻其实只是在处理一个请求。
+- 单线程和多核
+> 线程是cpu调度的一个基本单位，一个cpu同时只能执行一个线程的任务，同样一个线程任务也只能在一个cpu上执行，所以如果你运行Node.js的机器是像i5，i7这样多核cpu，那么将无法充分利用多核cpu的性能来为Node.js服务。
+
+
+
+
+> cluster可以用来让Node.js充分利用多核cpu的性能，同时也可以让Node.js程序更加健壮，官网上的cluster示例已经告诉我们如何重新启动一个因为异常而奔溃的子进程。
+
+> child_process模块提供了fork的方法，可以启动一个Node.js文件，将它作为worker进程，当worker进程工作完毕，把结果通过send方法传递给主进程，然后自动退出，这样我们就利用了多进程来解决主线程阻塞的问题。
+
+> 使用child_process模块的fork方法确实可以让我们很好的解决单线程对cpu密集型任务的阻塞问题，
+
+
+> 在支持html5的浏览器里，我们可以使用webworker来将一些耗时的计算丢入worker进程中执行，这样主进程就不会阻塞，用户也就不会有卡顿的感觉了。
+
+
+
+> 单线程的Node.js给我们编码带来了太多的便利和乐趣，我们应该时刻保持清醒的头脑，在写Node.js代码中切不可与PHP混淆，任何一个隐藏的问题都可能击溃整个线上正在运行的Node.js程序。
+  
+> 单线程异步的Node.js不代表不会阻塞，在主线程做过多的任务可能会导致主线程的卡死，影响整个程序的性能，所以我们要非常小心的处理大量的循环，字符串拼接和浮点运算等cpu密集型任务，合理的利用各种技术把任务丢给子线程或子进程去完成，保持Node.js主线程的畅通。
+
+> 线程/进程的使用并不是没有开销的，尽可能减少创建和销毁线程/进程的次数，可以提升我们系统整体的性能和出错的概率。
+
+> 最后请不要一味的追求高性能和高并发，因为我们可能不需要系统具有那么大的吞吐率。高效，敏捷，低成本的开发才是项目所需要的，这也是为什么Node.js能够在众多开发语言中脱颖而出的关键。
+
+
+
+
+#### 缓存优化策略
+
+Node.JS主要的两个缺点：V8内存限制和Node.JS的单线程
+
+> 对于缓存要求不高的Web应用来说，在Node中做缓存最简单高效的方法是使用一个Object对象，将缓存以key-value的形式存入这个对象中，这么做的理由是拥有更快的存取速度。通过测试得知，相比Redis通过TCP连接的形式与客户端进行通信，在程序中直接使用对象进行存储的效率会是Redis的40倍。
+
+> 对于解决资源不足的问题，尤其是内存方面的问题，通常采用风险转移的方式。即将缓存点从Node.JS进程中转移到第三方成熟的缓存（如Redis，varnish等）中去即可。这样做的优点在于：1、缓存内容没有冗余；2、集中式缓存，减少不一致性的发生；3、更加优秀的缓存算法以保证较高的命中率；3、让Node.JS保持轻量，以解决它更擅长的问题[1]；
+
+
+####  调试工具
+
+***node-inspector***
+
+安装
+```angular2html
+npm install -g node-inspector
+```
+启动程序
+```angular2html
+node --debug test.js
+```
+启动调试页面
+```angular2html
+node-inspector
+```
+
+
+
+
+#### Node.js 的 GC
+
+> Node.js 的 GC 方式为分代 GC (Generational GC)。对象的生命周期由它的大小决定。对象首先进入占用空间很少的 new space (8MB)。大部分对象会很快失效，会频繁而且快速执行 Young GC (scavenging)*直接*回收这些少量内存。假如有些对象在一段时间内不能被回收，则进入 old space (64-128KB chunks of 8KB pages)。这个区域则执行不频繁的 Old GC/Full GC (mark-sweep, compact or not)，并且耗时比较长。(Node.js 的 GC 有两类：Young GC： 频繁的小量的回收；Old GC： 长时间存在的数据)
+
+
+
+####  热部署
+
+均使用npm 安装即可
+- supervisor 可以帮助你实现这个功能，它会监视你对代码的改动，并自动重启 Node.js
+- hotnode
+
+
+
+
+### 知识点
+
+Node.js是单线程的，基于事件循环，非阻塞 IO的。
+
+#### js commonjs es nodejs
+
+javascript是一种脚本编程语言。
+ES6，可直接理解为javascript的增强版(增加了新的规范、特性与功能)或最新版。
+Commonjs、AMD以及曾经很火的CMD都只是为了解决javascript文件之间的依赖与引用问题，所以它们只是一种Javascript的包管理规范。
+nodejs是javascript开发本地应用、服务器应用的一个开发套件。
+
+
+> CommonJS是nodejs也就是服务器端广泛使用的模块化机制。 
+  该规范的主要内容是，模块必须通过module.exports 导出对外的变量或接口，通过 require() 来导入其他模块的输出到当前模块作用域中。 
+
+> CommonJS模块的加载机制是，输入的是被输出的值的拷贝。也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。
+
+- CommonJS规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。
+- AMD规范则是异步加载模块，允许指定回调函数，在回调函数中执行操作
+
+> 模块的默认值是使用 default 关键字所指定的单个变量、函数或类，而你在每个模块中只能设置一个默认导出。
+
+#### Promise
+Promise 是异步编程的一种解决方案，有两个特点：
+
+- 对象的状态不受外界影响。Promise对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）
+- 一旦状态改变，就不会再变，任何时候都可以得到这个结果。Promise对象的状态改变，只有两种可能：从pending变为fulfilled和从pending变为rejected。
+
+
+#### Generator
+Generator 函数是 ES6 提供的一种异步编程解决方案，语法行为与传统函数完全不同。
+
+Generator 函数是一种可以暂停执行的函数。yield表达式就是暂停标志。返回一个遍历器对象，可以依次遍历 Generator 函数内部的每一个状态。
+```javascript
+//function与函数名之间用*隔开
+//yield关键字定义状态
+function* helloWorldGenerator() {
+  yield 'hello';
+  yield 'world';
+  return 'ending';
+}
+
+var hw = helloWorldGenerator();
+
+hw.next()
+// { value: 'hello', done: false }
+
+hw.next()
+// { value: 'world', done: false }
+
+hw.next()
+// { value: 'ending', done: true }
+
+hw.next()
+// { value: undefined, done: true }
+```
+
+
+#### async
+
+async 函数即Generator 函数的语法糖。async函数就是将 Generator 函数的星号（*）替换成async，将yield替换成await，仅此而已。
+
+async函数返回一个 Promise 对象，可以使用then方法添加回调函数。当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
+
+async 函数的实现原理，就是将 Generator 函数和自动执行器，包装在一个函数里。
+
+
+#### class
+
+JavaScript语言中，像面向对象编程的语法来生成实例对象的语法糖。Class 可以通过extends关键字实现继承，这比 ES5 的通过修改原型链实现继承。
+
+
+#### module
+
+
+- CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
+- CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
+
+
+#### nodejs
+
+- Node.js 是单进程单线程应用程序，但是因为 V8 引擎提供的异步执行回调接口，通过这些接口可以处理大量的并发，所以性能非常高。
+- Node.js 几乎每一个 API 都是支持回调函数的。
+- Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。
+- Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数.
+
+EventEmitter
+
+> Node.js 所有的异步 I/O 操作在完成时都会发送一个事件到事件队列。
+
+Buffer
+> JavaScript 语言自身只有字符串数据类型，没有二进制数据类型。Buffer是 Node.js 来处理二进制数据的。
+
+Stream
+
+> Stream 是一个抽象接口，Node 中有很多对象实现了这个接口。例如，对http 服务器发起请求的request 对象就是一个 Stream，还有stdout（标准输出）。
+
+```javascript
+var fs = require("fs");
+
+// 创建一个可读流
+var readerStream = fs.createReadStream('input.txt');
+
+// 创建一个可写流
+var writerStream = fs.createWriteStream('output.txt');
+
+// 管道读写操作
+// 读取 input.txt 文件内容，并将内容写入到 output.txt 文件中
+readerStream.pipe(writerStream);
+
+console.log("程序执行完毕");
+```
+
+模块系统
+> 模块是Node.js 应用程序的基本组成部分，文件和模块是一一对应的。换言之，一个 Node.js 文件就是一个模块，这个文件可能是JavaScript 代码、JSON 或者编译过的C/C++ 扩展。
+
+全局变量
+
+- __filename 表示当前正在执行的脚本的文件名。
+- __dirname 表示当前执行脚本所在的目录。
+- setTimeout(cb, ms) 全局函数在指定的毫秒(ms)数后执行指定函数(cb)
+- clearTimeout( t ) 全局函数用于停止一个之前通过 setTimeout() 创建的定时器。
+- setInterval(cb, ms) 全局函数在指定的毫秒(ms)数后执行指定函数(cb)。
+- process 是一个全局变量，它用于描述当前Node.js 进程状态的对象，提供了一个与操作系统的简单接口
+
+util
+> util 是一个Node.js  核心模块，提供常用函数的集合，用于弥补核心JavaScript 的功能 过于精简的不足。
+
+- util.inherits 实现对象间原型继承 的函数
+- util.inspect 将任意对象转换 为字符串的方法，通常用于调试和错误输出
+- util.isArray(object) 判断是否是数组
+- util.isRegExp(object)  判断是否是正则表达式
+- util.isDate(object) 判断是否是日期
+- util.isError(object) 判断是否是error对象
+
+
+
+
+
+###  常见的面试题
+
+-  js 中什么类型是引用传递, 什么类型是值传递? 如何将值类型的变量以引用的方式传递? 
+
+对象是引用传递, 基础类型是值传递,通过将基础类型包装 (boxing) 可以以引用的方式传递
+
+- js 中， 0.1 + 0.2 === 0.3 是否为 true ? 在不知道浮点数位数时应该怎样判断两个浮点数之和与第三数是否相等？
+
+- const 定义的 Array 中间元素能否被修改? 如果可以, 那 const 修饰对象的意义是? 
+
+其中的值可以被修改. 意义上, 主要保护引用不被修改
+- JavaScript 中不同类型以及不同环境下变量的内存都是何时释放? 
+
+引用类型是在没有引用之后, 通过 v8 的 GC 自动回收, 值类型如果是处于闭包的情况下, 要等闭包没有引用才会被 GC 回收, 非闭包的情况下等待 v8 的新生代 (new space) 切换的时候回收.
+
+
+--- 
+
+模块
+
+- a.js 和 b.js 两个文件互相 require 是否会死循环? 双方是否能导出变量? 如何从设计上避免这种问题? [more]
+
+不会, 先执行的导出空对象, 通过导出工厂函数让对方从函数去拿比较好避免. 模块在导出的只是 var module = { exports: {} }; 中的 exports, 以从 a.js 启动为例,a.js 还没执行完 exports 就是 {} 在 b.js 的开头拿到的就是 {} 而已.
+
+- 如果 a.js require 了 b.js, 那么在 b 中定义全局变量 t = 111 能否在 a 中直接打印出来? [more]
+
+每个 .js 能独立一个环境只是因为 node 帮你在外层包了一圈自执行, 所以你使用 t = 111 定义全局变量在其他地方当然能拿到
+
+- 如何在不重启 node 进程的情况下热更新一个 js/json 文件? 这个问题本身是否有问题? [more]
+
+可以清除掉 require.cache 的缓存重新 require(xxx)
+
+
+
+module.exports 初始值为一个空对象 {}
+exports 是指向的 module.exports 的引用
+require() 返回的是 module.exports 而不是 exports
+
+
+黑盒测试 (Black-box Testing), 测试应用程序的功能,
+白盒测试 (White-box Testing) 测试应用程序的内部结构或运作,
+单元测试 (Unit Testing) 是白盒测试的一种, 用于针对程序模块进行正确性检验的测试工作. 单元 (Unit) 是指最小可测试的部件. 
+
+常用的测试覆盖率框架 istanbul.
+
+
+压力测试 (Stress testing), 是保证系统稳定性的一种测试方法. 通过预估系统所需要承载的 QPS, TPS 等指标, 然后通过如 Jmeter 等压测工具
+
+
+目前 Node.js 中流行的白盒级基准测试工具是 benchmark.
+
+常见测试工具
+Mocha
+ava
+Jest
+
+
+#### express和koa比较
+> Express主要基于Connect中间件框架，功能丰富，随取随用，并且框架自身封装了大量便利的功能，比如路由、视图处理等等。而koa主要基于co中间件框架，框架自身并没集成太多功能，大部分功能需要用户自行require中间件去解决，但是由于其基于ES6 generator特性的中间件机制，解决了长期诟病的“callback hell”和麻烦的错误处理的问题，大受开发者欢迎。
+
+
+|名称|对应|基于|
+| --- | --- | --- |
+|express|es5|回调嵌套| 
+|koa|es6|Generator函数+yield语句+Promise|
+|koa2|es7|async/await+Promise|
+
+
+#### 阻塞非阻塞 同步异步
+
+同步和异步关注的是消息通信机制，
+
+所谓同步，就是在发出一个*调用*时，在没有得到结果之前，该*调用*就不返回。但是一旦调用返回，就得到返回值了。
+
+而异步则是相反，*调用*在发出之后，这个调用就直接返回了，所以没有返回结果
+
+- 阻塞，非阻塞：进程/线程要访问的数据是否就绪，进程/线程是否需要等待；
+- 同步，异步：访问数据的方式，同步需要主动读写数据，在读写数据的过程中还是会阻塞；异步只需要I/O操作完成的通知，并不主动读写数据，由操作系统内核完成数据的读写。
+
+
+
+
+#### Promise
+
+- Promise.all()
+
+```javascript
+var promise = Promise.all( [p1, p2, p3] )
+promise.then(
+    ...
+).catch(
+    ...
+)
+```
+当p1、p2、p3的状态都变成resolved时，promise才会变成resolved，并调用then()的已完成回调，但只要有一个变成rejected状态，promise就会立刻变成rejected状态
+
+- Promise.race()
+```javascript
+var promise = Promise.race( [p1, p2, p3] )
+promise.then(
+    ...
+).catch(
+    ...
+)
+```
+“竞速”方法，参数与Promise.all()相同，不同的是，参数中的p1、p2、p3只要有一个改变状态，promise就会立刻变成相同的状态并执行对于的回调
+
+
+
+> process.nextTick 是将异步回调放到当前帧的末尾、io回调之前，如果nextTick过多，会导致io回调不断延后,最后callback堆积太多.
+  
+> setImmediate 是将异步回调放到下一帧,不影响io回调,不会造成callback 堆积.
+
+> setTimeout第二个参数设置为0或者不设置，意思不是立即执行回调，而是在下次tick时立即执行
+
+
+
+
+
+#### HTTP  TCP  UDP
+
+HTTP是一个基于TCP/IP通信协议来传递数据
+
+HTTP默认端口号为80
+- HTTP是无连接:无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间
+- HTTP是媒体独立的：这意味着，只要客户端和服务器知道如何处理的数据内容，任何类型的数据都可以通过HTTP发送。客户端以及服务器指定使用适合的MIME-type内容类型。
+- HTTP是无状态：HTTP协议是无状态协议。无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。
+
+
+> TCP（Transmission Control Protocol，传输控制协议）是基于连接的协议，也就是说，在正式收发数据前，必须和对方建立可靠的连接。
+> UDP（User Data Protocol，用户数据报协议）是与TCP相对应的协议。它是面向非连接的协议，它不与对方建立连接，而是直接就把数据包发送过去！ 
+  UDP适用于一次只传送少量数据、对可靠性要求不高的应用环境。(ping”命令的原理就是向对方主机发送UDP数据包)
+  
+  
+
+
+### 数据库命令操作
+
+聚合查询
+```
+SELECT name,max(age) FROM player GROUP BY name ;
+```
+插入
+```
+INSERT INTO player VALUES ('小7',29);
+
+```
+
+
 ### 堆和栈
 C++中，内存分为5个区：堆、栈、自由存储区、全局/静态存储区和常量存储区。
 
