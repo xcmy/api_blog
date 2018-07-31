@@ -10,7 +10,7 @@ module.exports =
     subtitle:'This is a place to share technology'
     author:'Jack Jones'
     summary:'nothing is impossible'
-    head_img:'https://demos.creative-tim.com/now-ui-kit-pro-angular/assets/img/project8.jpg'
+    head_img:'http://tx.haiqq.com/uploads/allimg/170504/0641415410-1.jpg'
     projects:[
       {
         img:'https://demos.creative-tim.com/now-ui-kit-pro-angular/assets/img/project8.jpg'
