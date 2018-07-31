@@ -265,4 +265,15 @@ module.exports =
       path:'/other/gfm.md'
       home:false
     },
+    {
+      img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
+      title:'谷歌搜索引擎命令整理'
+      sort:'其他'
+      subtitle:'谷歌搜索引擎命令整理'
+      tags:['google']
+      date:'2018-02-06'
+      author:'xcmy'
+      path:'/other/search.md'
+      home:false
+    },
   ]
