@@ -15,41 +15,19 @@ module.exports =
       {
         img:'https://demos.creative-tim.com/now-ui-kit-pro-angular/assets/img/project8.jpg'
         name:'航班记录爬虫项目'
-        content:'项目爬取了和航班记录相关的几个网站，包括航线、城市编码、城市经纬度、航班飞行记录等数据，使用vue+eCharts将其具象化。'
-        desc:[
-          {
-            title:'项目结构'
-            content:'项目包含两部分，一个Server端用于爬取各大网站进行数据源获取，另一个Web端对爬取到的数据进行展示'
-          },
-          {
-            title:'技术架构'
-            content:'Server端使用Koa+cheerio+request-promise<br>Web端使用Vue+eCharts'
-          },
-          {
-            title:'其他'
-            content:'lue'
-          }
-        ]
+        content:'项目爬取了和航班记录相关的几个网站，包括航线、城市编码、城市经纬度、航班飞行记录等数据，使用vue+eCharts将其具象化。项目包含两部分，一个Server端用于爬取各大网站进行数据源获取，另一个Web端对爬取到的数据进行展示'
+        demoUrl:'http://www.xcmy.top/fli'
+        githubUrl:'https://github.com/xcmy/cheerio'
+        date:'2018-03-03'
       },
       {
 
         img:'https://demos.creative-tim.com/now-ui-kit-pro-angular/assets/img/project8.jpg'
-        name:'航班记录爬虫项目'
-        content:'项目爬取了和航班记录相关的几个网站，包括航线、城市编码、城市经纬度、航班飞行记录等数据，使用vue+eCharts将其具象化。'
-        desc:[
-          {
-            title:'项目结构'
-            content:'项目包含两部分，一个Server端用于爬取各大网站进行数据源获取，另一个Web端对爬取到的数据进行展示'
-          },
-          {
-            title:'技术架构'
-            content:'Server端使用Koa+cheerio+request-promise<br>Web端使用Vue+eCharts'
-          },
-          {
-            title:'其他'
-            content:'lue'
-          }
-        ]
+        name:'在线考试系统'
+        content:'在线考试系统可以在线上添加题目并生成试卷进行自主考试的简易考试系统。服务端采用coffeeScript，数据库选用PostgreSql，webFrameWork使用koa，并使用vue进行的组件化开发，UI页面采用iView。'
+        demoUrl:'http://www.xcmy.top/fli'
+        githubUrl:'https://github.com/xcmy/cheerio'
+        date:'2017-11-04'
       }
     ]
 

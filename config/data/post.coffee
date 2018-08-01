@@ -51,10 +51,10 @@ module.exports =
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
       sort:'CoffeeScript'
-      title:'一个基于coffee + postgresql + koa2 的服务端项目模型搭建'
+      title:'koa2的Web服务搭建'
       subtitle:'该文章整理了使用CoffeeScript作为服务端语言，数据库采用PostgreSQL,webFrameWork使用koa2搭建一个web服务项目的流程。'
       tags:['CoffeeScript','postgresql','koa']
-      date:'2018-08-13'
+      date:'2017-08-13'
       author:'xcmy'
       path:'/node/kcpdemo.md'
       home:false
@@ -221,7 +221,7 @@ module.exports =
     },
     {
       img:'http://pa8ph8wkz.bkt.clouddn.com/image/hor/1375673557481.jpg'
-      title:'vue项目打包空白问题解决以及打包优化'
+      title:'vue项目打包'
       sort:'vue'
       subtitle:'vue项目路径问题导致打包页面空白问题解决以及使用cdn优化包大小'
       tags:['vue']
@@ -239,7 +239,7 @@ module.exports =
       tags:['golang']
       date:'2017-12-26'
       author:'xcmy'
-      path:'/vue/golearn.md'
+      path:'/golang/golearn.md'
       home:false
     },
 #  其他
